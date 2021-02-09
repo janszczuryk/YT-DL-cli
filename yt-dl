@@ -10,7 +10,7 @@ config_saving_audio_format="mp3"
 config_saving_audio_quality=0 # 0 - Best | 10 - Worst
 config_searching_results_count=5
 
-# Global variables
+# Data variables
 songs=()
 
 function dl_url
@@ -50,6 +50,11 @@ function show_found_songs
 		title=$(jq '.title' <(echo "${songs[$i]}"))
 		echo "$number) $title"
 	done
+}
+
+function update_youtubedl
+{
+	sudo youtube-dl -U
 }
 
 function show_menu
@@ -127,8 +132,12 @@ function menu_update
 {
 	echo -e "\n[Update the youtube-dl]\n"
 
-	#TODO
+	echo "Updating the youtube-dl."
+	echo ""
 
+	update_youtubedl
+
+	echo ""
 	read -n 1 -s -r -p "Press any key to continue..."
 	show_menu
 }
