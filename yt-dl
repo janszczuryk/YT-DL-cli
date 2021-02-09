@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script requires the 'youtube-dl' and 'ffmpeg' packages.
+# This script requires the 'youtube-dl', 'ffmpeg', 'jq' packages.
 # Make sure you already have installed all of them.
 
 # Config variables
@@ -8,10 +8,48 @@ config_saving_dir="./download/"
 config_saving_file_name="%(title)s.%(ext)s"
 config_saving_audio_format="mp3"
 config_saving_audio_quality=0 # 0 - Best | 10 - Worst
+config_searching_results_count=5
+
+# Global variables
+songs=()
 
 function dl_url
 {
 	youtube-dl -o "${config_saving_dir}${config_saving_file_name}" -x --audio-format $config_saving_audio_format --audio-quality $config_saving_audio_quality $1
+}
+
+function search_songs
+{
+	songs=()
+	local search_results=$(mktemp)
+
+	youtube-dl -j --default-search "ytsearch${config_searching_results_count}" "$1" | jq '{title:.fulltitle, url: .webpage_url}' > $search_results
+
+	local line_number=0
+	local temp_string=""
+	while IFS= read -r line
+	do
+		line_number=$((line_number+1))
+		temp_string="${temp_string}${line}"
+
+		if [ $(( $line_number % 4 )) -eq 0 ]; then
+			songs[${#songs[@]}]=$(jq '.' <(echo "$temp_string"))
+			temp_string=""
+		fi
+	done < "$search_results"
+
+	rm $search_results
+}
+
+function show_found_songs
+{
+	local number=0
+	local title=""
+	for i in "${!songs[@]}"; do
+		number=$((i+1))
+		title=$(jq '.title' <(echo "${songs[$i]}"))
+		echo "$number) $title"
+	done
 }
 
 function show_menu
@@ -64,9 +102,24 @@ function menu_search
 {
 	echo -e "\n[Search the song (Title)]\n"
 
-	#TODO
+	echo "Please enter the song's title."
+	read -p "> " title
+	echo ""
 
+	search_songs $title
+	show_found_songs
+
+	read -p "> " song_number
+	echo ""
+
+	local song_index=$((song_number-1))
+	local song_url=$(jq '.url' <(echo "${songs[song_index]}") | tr -d '"')
+
+	dl_url $song_url
+
+	echo ""
 	read -n 1 -s -r -p "Press any key to continue..."
+	
 	show_menu
 }
 
