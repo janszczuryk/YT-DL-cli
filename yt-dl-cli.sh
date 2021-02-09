@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function show_menu
 {
@@ -23,7 +23,9 @@ function show_menu
             4 )
                 quit
                 ;;
-            *) echo "Please choose 1-4 option.";;
+            * )
+		        echo "Please choose 1-4 option."
+		        ;;
         esac
     done
 }
