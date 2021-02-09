@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script requires the 'youtube-dl', 'ffmpeg', 'jq' packages.
-# Make sure you already have installed all of them.
+# Make sure you already installed all of them.
 
 # Config variables
 config_saving_dir="./download/"
@@ -50,6 +50,7 @@ function show_found_songs
 		title=$(jq '.title' <(echo "${songs[$i]}"))
 		echo "$number) $title"
 	done
+	echo "0) Back to Main menu"
 }
 
 function update_youtubedl
@@ -117,6 +118,11 @@ function menu_search
 	read -p "> " song_number
 	echo ""
 
+	if [ $song_number -eq 0 ]; then
+		show_menu
+		return 0
+	fi
+
 	local song_index=$((song_number-1))
 	local song_url=$(jq '.url' <(echo "${songs[song_index]}") | tr -d '"')
 
@@ -139,6 +145,7 @@ function menu_update
 
 	echo ""
 	read -n 1 -s -r -p "Press any key to continue..."
+	
 	show_menu
 }
 
