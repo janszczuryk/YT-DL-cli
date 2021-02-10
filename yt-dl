@@ -3,6 +3,9 @@
 # This script requires the 'youtube-dl', 'ffmpeg', 'jq' packages.
 # Make sure you already installed all of them.
 
+# Path where config will be stored
+config_path=~/.config/yt-dl.json
+
 # Config variables
 config_saving_dir="./download/"
 config_saving_file_name="%(title)s.%(ext)s"
@@ -56,6 +59,33 @@ function show_found_songs
 function update_youtubedl
 {
 	sudo youtube-dl -U
+}
+
+function create_config
+{
+	echo -e $(jq -n --arg saving_dir $config_saving_dir \
+		--arg saving_file_name $config_saving_file_name \
+		--arg saving_audio_format $config_saving_audio_format \
+		--arg saving_audio_quality $config_saving_audio_quality \
+		--arg searching_results_count $config_searching_results_count \
+		'{$saving_dir, $saving_file_name, $saving_audio_format, $saving_audio_quality, $searching_results_count}') | jq . > "$1"
+}
+
+function load_config
+{
+	if [ ! -f $config_path ]; then
+		local config_dir=${config_path%/*}
+		mkdir -p $config_dir
+
+		touch $config_path
+		create_config $config_path
+	fi
+
+	config_saving_dir=$(jq '.saving_dir' $config_path | tr -d '"')
+	config_saving_file_name=$(jq '.saving_file_name' $config_path | tr -d '"')
+	config_saving_audio_format=$(jq '.saving_audio_format' $config_path | tr -d '"')
+	config_saving_audio_quality=$(jq '.saving_audio_quality' $config_path | tr -d '"')
+	config_searching_results_count=$(jq '.searching_results_count' $config_path | tr -d '"')
 }
 
 function show_menu
@@ -154,4 +184,5 @@ function menu_quit
 	exit
 }
 
+load_config
 show_menu
