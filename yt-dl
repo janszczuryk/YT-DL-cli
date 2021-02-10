@@ -2,12 +2,13 @@
 
 # This script requires the 'youtube-dl', 'ffmpeg', 'jq' packages.
 # Make sure you already installed all of them.
+# You could run any of install scripts included to repository.
 
 # Path where config will be stored
 config_path=~/.config/yt-dl.json
 
-# Config variables
-config_saving_dir="./download/"
+# Config (default) variables
+config_saving_dir=~/download
 config_saving_file_name="%(title)s.%(ext)s"
 config_saving_audio_format="mp3"
 config_saving_audio_quality=0 # 0 - Best | 10 - Worst
@@ -18,7 +19,7 @@ songs=()
 
 function dl_url
 {
-	youtube-dl -o "${config_saving_dir}${config_saving_file_name}" -x --audio-format $config_saving_audio_format --audio-quality $config_saving_audio_quality $1
+	youtube-dl -o "${config_saving_dir}/${config_saving_file_name}" -x --audio-format $config_saving_audio_format --audio-quality $config_saving_audio_quality $1
 }
 
 function search_songs
@@ -86,6 +87,14 @@ function load_config
 	config_saving_audio_format=$(jq '.saving_audio_format' $config_path | tr -d '"')
 	config_saving_audio_quality=$(jq '.saving_audio_quality' $config_path | tr -d '"')
 	config_searching_results_count=$(jq '.searching_results_count' $config_path | tr -d '"')
+
+	if [ ! -d $config_saving_dir ]; then
+		echo "Not exists dir: $config_saving_dir"
+		mkdir -p $config_saving_dir
+	else
+		echo "Exists dir"
+	fi
+	read a
 }
 
 function show_menu
