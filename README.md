@@ -10,9 +10,12 @@ YT-DL is a shell script that allows you to download songs from YouTube.
 2. Unpack archive.
 3. Enter into the directory `YT-DL-cli`.
 4. Use one of dependecy installer (eg. `install-debian`).
-
 ```bash
 chmod +x install-debian && ./install-debian
+```
+5. Now you may remove the directory.
+```bash
+cd .. && rm -rf YT-DL-cli
 ```
 
 ## Usage
