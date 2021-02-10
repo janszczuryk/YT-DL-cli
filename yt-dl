@@ -89,12 +89,8 @@ function load_config
 	config_searching_results_count=$(jq '.searching_results_count' $config_path | tr -d '"')
 
 	if [ ! -d $config_saving_dir ]; then
-		echo "Not exists dir: $config_saving_dir"
 		mkdir -p $config_saving_dir
-	else
-		echo "Exists dir"
 	fi
-	read a
 }
 
 function show_menu
