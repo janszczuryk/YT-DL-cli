@@ -18,7 +18,7 @@ unzip yt-dl-cli.zip
 ```bash
 cd YT-DL-cli-main
 ```
-4. Use one of dependecy installer (eg. `install-debian`).
+4. Use one of dependency installer (eg. `install-debian`).
 ```bash
 chmod +x install-debian && ./install-debian
 ```
