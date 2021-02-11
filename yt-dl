@@ -57,9 +57,26 @@ function show_found_songs
 	echo "0) Back to Main menu"
 }
 
+function detect_distro
+{
+	echo $(lsb_release -is)
+}
+
 function update_youtubedl
 {
-	sudo youtube-dl -U
+	distro=$(detect_distro)
+	
+	case $distro in
+		"Debian" | "Ubuntu" | "Kali" | "Mint")
+			sudo youtube-dl -U
+			;;
+		"Arch" | "ManjaroLinux")
+			sudo pacman -S youtube-dl
+			;;
+		*)
+			echo -e "The script could not to detect your distro (${distro})!\nPlease update youtube-dl manually."
+			;;
+	esac
 }
 
 function create_config

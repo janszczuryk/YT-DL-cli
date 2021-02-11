@@ -1,0 +1,34 @@
+#!/bin/bash
+
+separator="====================="
+separator="\n||$separator$separator$separator||"
+
+function install_packages
+{  
+    sudo pacman -S wget ffmpeg jq youtube-dl
+}
+
+function install_ytdl
+{
+    echo -e $separator
+    sudo cp yt-dl /usr/local/bin/yt-dl
+    sudo chmod a+rx /usr/local/bin/yt-dl
+}
+
+echo "YT-DL (cli)"
+echo -e "[Installing dependencies (Arch based distro)]\n"
+
+read -p "Do you want to continue? [Y/n] " accepted
+
+if [[ $accepted != "n" && $accepted != "N" ]]; then
+    echo -e "Accepted.\n"
+
+    install_packages
+    install_ytdl
+
+    echo -e "Finished!\n"
+    exit
+else
+    echo -e "Aborted.\n"
+    exit
+fi
