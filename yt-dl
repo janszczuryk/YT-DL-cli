@@ -4,8 +4,8 @@
 # Make sure you already installed all of them.
 # You could run any of install scripts included to the repository.
 
-# Path where config will be stored
-config_path=~/.config/yt-dl.json
+# Path where config is being stored
+readonly CONFIG_PATH=~/.config/yt-dl.json
 
 # Config (default) variables
 config_saving_dir=~/download
@@ -15,6 +15,8 @@ config_saving_audio_quality=0 # 0 - Best | 10 - Worst
 config_searching_results_count=5
 
 # Data variables
+readonly VERSION="v1.0"
+readonly VERSION_DATE="11.02.2021"
 songs=()
 
 function dl_url
@@ -91,19 +93,19 @@ function create_config
 
 function load_config
 {
-	if [ ! -f $config_path ]; then
-		local config_dir=${config_path%/*}
+	if [ ! -f $CONFIG_PATH ]; then
+		local config_dir=${CONFIG_PATH%/*}
 		mkdir -p $config_dir
 
-		touch $config_path
-		create_config $config_path
+		touch $CONFIG_PATH
+		create_config $CONFIG_PATH
 	fi
 
-	config_saving_dir=$(jq '.saving_dir' $config_path | tr -d '"')
-	config_saving_file_name=$(jq '.saving_file_name' $config_path | tr -d '"')
-	config_saving_audio_format=$(jq '.saving_audio_format' $config_path | tr -d '"')
-	config_saving_audio_quality=$(jq '.saving_audio_quality' $config_path | tr -d '"')
-	config_searching_results_count=$(jq '.searching_results_count' $config_path | tr -d '"')
+	config_saving_dir=$(jq '.saving_dir' $CONFIG_PATH | tr -d '"')
+	config_saving_file_name=$(jq '.saving_file_name' $CONFIG_PATH | tr -d '"')
+	config_saving_audio_format=$(jq '.saving_audio_format' $CONFIG_PATH | tr -d '"')
+	config_saving_audio_quality=$(jq '.saving_audio_quality' $CONFIG_PATH | tr -d '"')
+	config_searching_results_count=$(jq '.searching_results_count' $CONFIG_PATH | tr -d '"')
 
 	if [ ! -d $config_saving_dir ]; then
 		mkdir -p $config_saving_dir
@@ -138,7 +140,7 @@ function show_menu
 	echo -e "YT-DL (cli)\n"
 
 	PS3='> '
-	menu=("Download the song (URL)" "Search the song (Title)" "Update the youtube-dl" "Show the downloaded songs" "Quit")
+	menu=("Download the song (URL)" "Search the song (Title)" "Update the youtube-dl" "Show the downloaded songs" "About" "Quit")
 	
 	COLUMNS=12
 	select option in "${menu[@]}"
@@ -157,10 +159,13 @@ function show_menu
 				menu_downloaded
 				;;
 			5)
+				menu_about
+				;;
+			6)
 				menu_quit
 				;;
 			*)
-				echo "Please choose valid option (1-5)."
+				echo "Please choose valid option (1-6)."
 				;;
 		esac
 	done
@@ -236,6 +241,25 @@ function menu_downloaded
 	echo -e "\n[Show the downloaded songs]\n"
 
 	show_downloaded_songs
+
+	echo ""
+	read -n 1 -s -r -p "Press any key to continue..."
+	
+	show_menu
+}
+
+function menu_about
+{
+	clear
+	echo -e "\n[About]\n"
+
+	echo -e "" \
+		"NAME:\t\tYT-DL (cli)\n" \
+		"VERSION:\t${VERSION} (${VERSION_DATE})\n" \
+		"\n" \
+		"A shell script that allows you to download songs from YouTube.\n" \
+		"Search songs by title, Paste links to videos and Adjust configuration to reach your purpose.\n" \
+		"The configuration file is located in '${CONFIG_PATH}'. Enjoy!\n"
 
 	echo ""
 	read -n 1 -s -r -p "Press any key to continue..."
