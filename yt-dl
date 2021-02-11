@@ -134,10 +134,16 @@ function show_downloaded_songs
 	fi
 }
 
+function press_any_key
+{
+	echo ""
+	read -n 1 -s -r -p "Press any key to continue..."
+}
+
 function show_menu
 {
 	clear
-	echo -e "YT-DL (cli)\n"
+	echo -e "|      YT-DL (cli)      |\n"
 
 	PS3='> '
 	menu=("Download the song (URL)" "Search the song (Title)" "Update the youtube-dl" "Show the downloaded songs" "About" "Quit")
@@ -174,7 +180,7 @@ function show_menu
 function menu_url
 {
 	clear
-	echo -e "\n[Download the song (URL)]\n"
+	echo -e "[Download the song (URL)]\n"
 
 	echo "Please enter the song URL."
 	read -p "> " song_url
@@ -182,22 +188,21 @@ function menu_url
 	
 	dl_url $song_url
 
-	echo ""
-	read -n 1 -s -r -p "Press any key to continue..."
-
+	press_any_key
 	show_menu
 }
 
 function menu_search
 {
 	clear
-	echo -e "\n[Search the song (Title)]\n"
+	echo -e "[Search the song (Title)]\n"
 
-	echo "Please choose the song's number."
+	echo "Please enter the song's title."
 	read -p "> " title
 	echo ""
 
 	search_songs $title
+	echo "Please choose the song's number:"
 	show_found_songs
 
 	read -p "> " song_number
@@ -213,45 +218,39 @@ function menu_search
 
 	dl_url $song_url
 
-	echo ""
-	read -n 1 -s -r -p "Press any key to continue..."
-	
+	press_any_key
 	show_menu
 }
 
 function menu_update
 {
 	clear
-	echo -e "\n[Update the youtube-dl]\n"
+	echo -e "[Update the youtube-dl]\n"
 
 	echo "Updating the youtube-dl."
 	echo ""
 
 	update_youtubedl
 
-	echo ""
-	read -n 1 -s -r -p "Press any key to continue..."
-	
+	press_any_key
 	show_menu
 }
 
 function menu_downloaded
 {
 	clear
-	echo -e "\n[Show the downloaded songs]\n"
+	echo -e "[Show the downloaded songs]\n"
 
 	show_downloaded_songs
 
-	echo ""
-	read -n 1 -s -r -p "Press any key to continue..."
-	
+	press_any_key
 	show_menu
 }
 
 function menu_about
 {
 	clear
-	echo -e "\n[About]\n"
+	echo -e "[About]\n"
 
 	echo -e "" \
 		"NAME:\t\tYT-DL (cli)\n" \
@@ -259,11 +258,9 @@ function menu_about
 		"\n" \
 		"A shell script that allows you to download songs from YouTube.\n" \
 		"Search songs by title, Paste links to videos and Adjust configuration to reach your purpose.\n" \
-		"The configuration file is located in '${CONFIG_PATH}'. Enjoy!\n"
+		"The configuration file is located in '${CONFIG_PATH}'. Enjoy!"
 
-	echo ""
-	read -n 1 -s -r -p "Press any key to continue..."
-	
+	press_any_key
 	show_menu
 }
 
