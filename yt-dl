@@ -24,6 +24,13 @@ function dl_url
 	youtube-dl -o "${config_saving_dir}/${config_saving_file_name}" -x --audio-format $config_saving_audio_format --audio-quality $config_saving_audio_quality $1
 }
 
+function is_url_valid
+{
+    regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+
+    [[ $1 =~ $regex ]]
+}
+
 function search_songs
 {
 	songs=()
@@ -183,7 +190,12 @@ function menu_url
 	echo -e "[Download the song (URL)]\n"
 
 	echo "Please enter the song URL."
-	read -p "> " song_url
+
+	local song_url=""
+	while ! is_url_valid $song_url
+	do
+		read -p "> " song_url
+	done 
 	echo ""
 	
 	dl_url $song_url
@@ -198,7 +210,12 @@ function menu_search
 	echo -e "[Search the song (Title)]\n"
 
 	echo "Please enter the song's title."
-	read -p "> " title
+
+	local title=""
+	while [[ $title == "" ]]
+	do
+		read -p "> " title
+	done 
 	echo ""
 
 	search_songs $title
