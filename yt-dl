@@ -110,6 +110,28 @@ function load_config
 	fi
 }
 
+function show_downloaded_songs
+{
+	if [[ -d $config_saving_dir && "$(ls -A $config_saving_dir)" ]]; then
+		local songs_count=$(ls -l $config_saving_dir/*.$config_saving_audio_format | wc -l)
+	else
+		local songs_count=0
+	fi
+
+	echo -e "Download directory '${config_saving_dir}' [${songs_count} song(s) total]:\n"
+
+	if [[ -d $config_saving_dir && "$(ls -A $config_saving_dir)" ]]; then
+		local songs=$(ls -A $config_saving_dir/*.$config_saving_audio_format)
+		local songs_array=()
+		readarray -t songs_array <<< "$songs"
+
+		for song in "${songs_array[@]}"
+		do
+			echo $(basename "${song}")
+		done
+	fi
+}
+
 function show_menu
 {
 	clear
@@ -122,22 +144,22 @@ function show_menu
 	select option in "${menu[@]}"
 	do
 		case $REPLY in
-			1 )
+			1)
 				menu_url
 				;;
-			2 )
+			2)
 				menu_search
 				;;
-			3 )
+			3)
 				menu_update
 				;;
-			4 )
+			4)
 				menu_downloaded
 				;;
-			5 )
+			5)
 				menu_quit
 				;;
-			* )
+			*)
 				echo "Please choose valid option (1-5)."
 				;;
 		esac
@@ -166,7 +188,7 @@ function menu_search
 	clear
 	echo -e "\n[Search the song (Title)]\n"
 
-	echo "Please enter the song's title."
+	echo "Please choose the song's number."
 	read -p "> " title
 	echo ""
 
@@ -213,6 +235,7 @@ function menu_downloaded
 	clear
 	echo -e "\n[Show the downloaded songs]\n"
 
+	show_downloaded_songs
 
 	echo ""
 	read -n 1 -s -r -p "Press any key to continue..."
@@ -222,6 +245,7 @@ function menu_downloaded
 
 function menu_quit
 {
+	clear
 	exit
 }
 
