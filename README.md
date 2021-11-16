@@ -1,11 +1,13 @@
 # YT-DL (cli)
 
-YT-DL is a shell script that allows you to download songs from YouTube.
+YT-DL is a cmd/bash script which allows you to download songs from YouTube.
 
-![Menu screenshot](https://i.imgur.com/2s2nK8i.png)
+![Menu screenshot Linux](https://i.imgur.com/2s2nK8i.png)
+![Menu scrrenshot Windows](https://i.imgur.com/YhJDz43.png)
 
 ## Installation
 
+### Linux version
 1. Download the repository (clone).
 ```bash
 wget -O yt-dl-cli.zip https://github.com/janszczuryk/YT-DL-cli/archive/main.zip
@@ -26,6 +28,9 @@ chmod +x install-debian && ./install-debian
 ```bash
 cd .. && rm -rf YT-DL-cli-main yt-dl-cli.zip
 ```
+
+### Windows version
+// TODO
 
 ## Usage
 
