@@ -17,7 +17,7 @@ cd Linux/
 
 ## Usage
 
-Simple launch the script
+Simply launch the script:
 ```bash
 ./yt-dl.sh
 ```
