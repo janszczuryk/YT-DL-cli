@@ -8,7 +8,7 @@ set BINARY=yt-dlp.exe
 
 :menu
 cls
-echo     YT-DL cli
+echo |      YT-DL cli      |
 echo.
 echo 1) Search the song (Title)
 echo 2) Download the song (URL)
