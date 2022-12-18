@@ -10,13 +10,13 @@ set BINARY=yt-dlp.exe
 cls
 echo     YT-DL cli
 echo.
-echo [1] Search by title
-echo [2] Download by URL
-echo [3] Download list URLs from file
-echo [4] Edit list of URLs
-echo [5] Open downloaded directory
-echo [6] Update youtube-dl
-echo [7] Quit
+echo 1) Search the song (Title)
+echo 2) Download the song (URL)
+echo 3) Download the songs from list (URLs)
+echo 4) Edit list of URLs
+echo 5) Open downloaded directory
+echo 6) Update the youtube-dl
+echo 7) Quit
 choice /n /c:1234567 /M "> "
 GOTO menuoption-%ERRORLEVEL%
 
