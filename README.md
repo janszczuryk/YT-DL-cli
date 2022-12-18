@@ -1,4 +1,4 @@
-# YT-DL (cli)
+# YT-DL cli
 
 YT-DL is a bash / cmd script that lets you to download songs from YouTube.
 
