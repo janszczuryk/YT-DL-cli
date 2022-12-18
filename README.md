@@ -2,8 +2,7 @@
 
 YT-DL is a bash / cmd script that lets you to download songs from YouTube.
 
-![Menu screenshot Linux](https://i.imgur.com/2s2nK8i.png)
-![Menu scrrenshot Windows](https://i.imgur.com/YhJDz43.png)
+![screenshot](https://i.imgur.com/2s2nK8i.png)
 
 ## Installation
 
